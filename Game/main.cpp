@@ -68,14 +68,14 @@ int main() {
 	//}
 	//PlaySound(L"./sound/ingame.wav", NULL, SND_FILENAME | SND_ASYNC);
 	//mciSendString(L"play  ./sound/ingame.wav", NULL, 0, NULL);
-	//Game g;
-	//g.RunGame();
-	//GotoXY({ 65,10 });
-	//cout << "GAME OVER BITCH!!!";
+	Game g;
+	g.RunGame();
+	GotoXY({ 65,10 });
+	cout << "GAME OVER BITCH!!!";
 	//system("cls");
 	//mciSendString(L"stop  ./sound/ingame.wav", NULL, 0, NULL);
-	Menu menu;
+	//Menu menu;
 	//PlaySound(L"./sound/welcome.wav", NULL, SND_FILENAME | SND_ASYNC);
-	menu.Choose_Menu();
+	//menu.Choose_Menu();
 	system("pause>null");
 }

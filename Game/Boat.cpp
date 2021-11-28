@@ -40,7 +40,7 @@ void Boat::DRAW() {
 	for (int i = 0; i < height; i++) {
 		GotoXY({ position.X,position.Y++ });
 		for (int j = 0; j < width; j++)
-			if (position.X + j >= 40 && position.X + j <= 100)
+			if (position.X + j >= 35 && position.X + j <= 109)
 				cout << graphic[red][i][j];
 	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(15));
@@ -48,7 +48,7 @@ void Boat::DRAW() {
 }
 
 void Boat::Moving() {
-	if (pos.X + width >= 200 || pos.X + width <= 40) {
+	if (pos.X + width >= 220 || pos.X + width <= 40) {
 		del(pos, { pos.X + width,pos.Y + height });
 		state = false;
 		pos = inpos;
@@ -70,6 +70,7 @@ void Boat::Moving() {
 
 	if (state and !direction)
 	{
+		if (pos.X <= 82)
 		del(pos, { pos.X + width,pos.Y + height });
 		pos.X--;
 	}

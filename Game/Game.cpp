@@ -34,8 +34,8 @@ void Game:: iniCar() {
 	
 
 	for (int i = 0; i < 3; i++) {
-		Carlist1.push_back(new Car({ 30,10 }, 15, 3, "graphic/car.txt", 1, 0));
-		Carlist2.push_back(new Car({ 30,26 }, 15, 3, "graphic/car.txt", 1, 0));
+		Carlist1.push_back(new Car({ 15,10 }, 15, 3, "graphic/car.txt", 1, 0));
+		Carlist2.push_back(new Car({ 15,26 }, 15, 3, "graphic/car.txt", 1, 0));
 	}
 }
 void Game::iniTruck() {
@@ -145,7 +145,7 @@ void Game::RunGame() {
 			Moving(Trucklist2, i5, dis5);
 		}
 
-		Sleep(speed);
+		Sleep(10);
 	}
 }
 
