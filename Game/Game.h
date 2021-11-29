@@ -24,6 +24,8 @@ private:
 	People *p;
 	Map *map;
 	int speed, level, maxlevel;
+	thread g_play;
+	bool g_running = true;
 
 	void ini();
 	void iniBoat();
@@ -44,10 +46,11 @@ private:
 
 
 	void ResetGame();
-
+	
 
 public:
 
+	void Running();
 	void RunGame();
 
 	

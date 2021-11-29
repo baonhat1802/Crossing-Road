@@ -31,37 +31,39 @@ void People::DRAW() {
 }
 
 void People::Moving(Map&map) {
-	del(pos, { pos.X + width,pos.Y + height });
-	if (_kbhit()) {
-		char key = toupper(_getch());
-		PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
-		switch (key)
-		{
-		case 'A':
-			if(pos.X>=20)
+	
+		if (GetAsyncKeyState(int(0x41)) & 1 && GetKeyState(int(0x41)) >> 15) {
+			del(pos, { pos.X + width,pos.Y + height });
+			if (pos.X >= 20)
 				pos.X--;
-			map.UpdateMap_people({ pos.X  + width,pos.Y }, { pos.X + width-1,pos.Y });
-			break;
-		case 'S':
-			if(pos.Y<=57)
-				pos.Y++;
-			map.UpdateMap_people({ pos.X,pos.Y-1 }, pos);
-			break;
-		case 'W':
-			if (pos.Y >= 3)
-				pos.Y--;
-			map.UpdateMap_people({ pos.X,pos.Y+ height }, { pos.X,pos.Y + height-1 });
-			break;
-		case 'D':
-			if(pos.X<=140)
-				pos.X++;
-			map.UpdateMap_people({ pos.X-1,pos.Y }, pos);
-			break;
+			map.UpdateMap_people({ pos.X + width,pos.Y }, { pos.X + width - 1,pos.Y });
+			PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
 		}
 
-	}
-		DRAW();	
-		
+		if (GetAsyncKeyState(int(0x53)) & 1 && GetKeyState(int(0x53)) >> 15) {
+			del(pos, { pos.X + width,pos.Y + height });
+			if (pos.Y <= 42)
+				pos.Y++;
+			map.UpdateMap_people({ pos.X,pos.Y - 1 }, pos);
+			PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
+		}
+
+		if (GetAsyncKeyState(int(0x57)) & 1 && GetKeyState(int(0x57)) >> 15) {
+			del(pos, { pos.X + width,pos.Y + height });
+			if (pos.Y >= 3)
+				pos.Y--;
+			map.UpdateMap_people({ pos.X,pos.Y + height }, { pos.X,pos.Y + height - 1 });
+			PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
+		}
+
+		if (GetAsyncKeyState(int(0x44)) & 1 && GetKeyState(int(0x44)) >> 15) {
+			del(pos, { pos.X + width,pos.Y + height });
+			if(pos.X<=140)
+				pos.X++;		
+			map.UpdateMap_people({ pos.X-1,pos.Y }, pos);
+			PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
+		}
+		DRAW();
 }
 
 bool People::IsDead() {

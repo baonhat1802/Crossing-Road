@@ -8,7 +8,7 @@ Menu::Menu() {
 
 void Menu::pMenu_Music() {
 	if(p_music)
-		PlaySound(L"./sound/welcome.wav", NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(L"./sound/welcome.wav", NULL, SND_LOOP | SND_ASYNC);
 	else
 		PlaySound(NULL, 0, 0);
 
@@ -144,16 +144,29 @@ void Menu::Loading() {
 	system("cls");
 }
 
-void Menu::hitTutorial() {
-	system("cls");
-	
-}
-
 void Menu::hitAbout() {
 	system("cls");
 	SetConsoleOutputCP(CP_UTF8);
 	DrawfromFile({ 55,15 }, "graphic/About.txt");
 	GotoXY({67,32 });
+	SetConsoleTextAttribute(handle, WORD(240));
+	cout << "Press ""Enter"" to back to Menu ";
+	char c = ' ';
+	while (true) {
+		if (_kbhit()) {
+			c = _getch();
+		}
+		if (c == 13)break;
+	}
+	SetConsoleTextAttribute(handle, WORD(15));
+	system("cls");
+}
+
+void Menu::hitTutorial() {
+	system("cls");
+	SetConsoleOutputCP(CP_UTF8);
+	DrawfromFile({ 30,0 }, "graphic/Rules.txt");
+	GotoXY({ 69,47 });
 	SetConsoleTextAttribute(handle, WORD(240));
 	cout << "Press ""Enter"" to back to Menu ";
 	char c = ' ';
@@ -197,11 +210,15 @@ void Menu::Choose_Menu() {
 		case 5:
 			hitAbout();
 			Choose_Menu();
-
 			break;
 			
 		case 6:
+			quit = true;
 			hitQuit();
 			break;
 	}
+}
+
+bool Menu:: IsQuit() {
+	return quit;
 }

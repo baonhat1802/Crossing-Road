@@ -127,9 +127,7 @@ void Game::p_ingame() {
 }
 
 void Game::RunGame() {
-	ResetGame();
-	map->DRAW();
-	while (!GameOver()) {
+	while (!GameOver() and g_running) {
 
 		p_ingame();
 		TFcontrol(ListLight);
@@ -145,7 +143,7 @@ void Game::RunGame() {
 			Moving(Trucklist2, i5, dis5);
 		}
 
-		Sleep(10);
+		Sleep(0);
 	}
 }
 
@@ -162,3 +160,49 @@ void Game::ResetGame() {
 	
 }
 
+void Game::Running() {
+	ResetGame();
+	map->DRAW();
+	g_play = thread(&Game::RunGame, this);
+
+	char c = ' ';
+	while (true) {
+		if (_kbhit()) {
+			c = toupper(_getch());
+			switch (c)
+			{
+			case 'P':
+				if (g_running)
+				{
+					g_running = false;
+					g_play.join();
+
+				}
+				else
+				{
+					g_running = true;
+					g_play = thread(&Game::RunGame, this);
+				}
+				//break;
+	//		case 'R':
+	//			if (!g_running)
+	//			{
+	//				g_running = true;
+	//				g_play.join();
+
+	//			}
+	//			ResetGame();
+	//			g_play = thread(&Game::RunGame, this);
+	//			break;
+	//		case 'T':
+	//			break;
+	//		case 'L':
+	//			break;
+	//		case 27://Esc 
+	//			break;
+			}
+		}
+
+	}
+	if (g_play.joinable()) g_play.join();
+}
