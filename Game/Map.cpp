@@ -29,6 +29,7 @@ void Map::DRAW() {
 				cout << graphic[i][j];
 		}
 	}
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(15));
 }
 
 //void Map::UpdateMap() {

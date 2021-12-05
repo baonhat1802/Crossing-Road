@@ -34,10 +34,11 @@ void People::Moving(Map&map) {
 	
 		if (GetAsyncKeyState(int(0x41)) & 1 && GetKeyState(int(0x41)) >> 15) {
 			del(pos, { pos.X + width,pos.Y + height });
-			if (pos.X >= 20)
+			if (pos.X >= 13)
 				pos.X--;
 			map.UpdateMap_people({ pos.X + width,pos.Y }, { pos.X + width - 1,pos.Y });
-			PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
+			//PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
+			mciSendString(L"play ./sound/popsound.wav ", NULL, 0, NULL);
 		}
 
 		if (GetAsyncKeyState(int(0x53)) & 1 && GetKeyState(int(0x53)) >> 15) {
@@ -45,7 +46,8 @@ void People::Moving(Map&map) {
 			if (pos.Y <= 42)
 				pos.Y++;
 			map.UpdateMap_people({ pos.X,pos.Y - 1 }, pos);
-			PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
+			//PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
+			mciSendString(L"play ./sound/popsound.wav ", NULL, 0, NULL);
 		}
 
 		if (GetAsyncKeyState(int(0x57)) & 1 && GetKeyState(int(0x57)) >> 15) {
@@ -53,31 +55,23 @@ void People::Moving(Map&map) {
 			if (pos.Y >= 3)
 				pos.Y--;
 			map.UpdateMap_people({ pos.X,pos.Y + height }, { pos.X,pos.Y + height - 1 });
-			PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
+			//PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
+			mciSendString(L"play ./sound/popsound.wav ", NULL, 0, NULL);
 		}
 
 		if (GetAsyncKeyState(int(0x44)) & 1 && GetKeyState(int(0x44)) >> 15) {
 			del(pos, { pos.X + width,pos.Y + height });
-			if(pos.X<=140)
+			if(pos.X<=104)
 				pos.X++;		
 			map.UpdateMap_people({ pos.X-1,pos.Y }, pos);
-			PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
+			//PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
+			mciSendString(L"play ./sound/popsound.wav ", NULL, 0, NULL);
 		}
+
 		DRAW();
 }
 
 bool People::IsDead() {
-	/*if (GetCOORD({ pos.X - 1, pos.Y }) == '|'  ||
-		GetCOORD({ pos.X + width + 1,pos.Y }) == '|' ||
-		GetCOORD({ pos.X - 1,pos.Y + height }) == '|' ||
-		GetCOORD({ pos.X + width + 1,pos.Y + height }) == '|'
-		)
-	{
-		state = true;
-		return true;
-	}
-	state = false;
-	return false;*/
 	string hit = "()</|o";
 	for (int i = 0; i < hit.length(); i++) {
 		if (
@@ -100,7 +94,7 @@ bool People::IsDead() {
 }
 
 bool People::IsOnTop() {
-	if (pos.Y <= 10)
+	if (pos.Y <= 6)
 		return true;
 	return false;
 }
@@ -111,4 +105,8 @@ void People::Get_Start() {
 	GotoXY(pos);
 
 	DRAW();
+}
+
+COORD People:: GetPos()const {
+	return pos;
 }

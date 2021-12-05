@@ -18,4 +18,6 @@ public	:
 
 	void Get_Start();
 
+	COORD GetPos()const;
+
 };

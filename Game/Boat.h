@@ -10,6 +10,7 @@ private:
 	int time;
 public:
 	Boat(COORD pos_, short width_, short height_, const char* filename, bool direction_, bool state_);
+	void SetInpos(const COORD& inpos_) { inpos = inpos_; };
 
 	void Moving();
 	void DRAW();
@@ -18,6 +19,9 @@ public:
 
 	bool isMoving();
 
+	COORD GetPos()const;
+
+	bool GetState()const;
 	/*char* backup();
 
 	void DRAWBU(const char*a);*/

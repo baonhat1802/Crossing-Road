@@ -7,6 +7,8 @@
 #include"TrafficLight.h"
 #include "people.h"
 #include "truck.h"
+#include "Menu.h"
+#pragma comment(lib, "Winmm.lib")
 
 class Game {
 private:
@@ -23,9 +25,11 @@ private:
 	vector<TrafficLight*> ListLight;
 	People *p;
 	Map *map;
+	Menu* menu;
+
 	int speed, level, maxlevel;
 	thread g_play;
-	bool g_running = true;
+	bool g_running,g_process,p_music;
 
 	void ini();
 	void iniBoat();
@@ -34,6 +38,15 @@ private:
 	void iniMap();
 	void iniTL();
 	void iniPeople();
+	void iniMenu();
+
+	void Clear_Menu();
+	void Clear_Car();
+	void Clear_Truck();
+	void Clear_People();
+	void Clear_TL();
+	void Clear_Boat();
+	void Clear_Map();
 
 	template<class T>
 	void Moving(vector<T*>& obj, int& i, int& dis);
@@ -41,18 +54,26 @@ private:
 	template<class T>
 	void TFcontrol(vector<T*>& obj);
 	bool GameOver();
+	bool WinGame();
 
 	void p_ingame();
 
+	void SaveGame();
 
+	void PauseGame();
+	void Reset();
 	void ResetGame();
-	
 
+	void PlayMusic();
+	void PauseMusic();
+	
+	
 public:
 
-	void Running();
+	void LoadGame(const string& name);
+	void Running(const char&A);
 	void RunGame();
-
+	void Process();
 	
 
 };

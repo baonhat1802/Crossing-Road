@@ -48,3 +48,14 @@ void Car::Moving() {
 
 
 }
+
+COORD Car:: GetPos()const {
+
+	return pos;
+}
+
+bool Car::GetState()const {
+
+	return state;
+
+}

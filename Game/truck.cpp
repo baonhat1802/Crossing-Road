@@ -49,3 +49,14 @@ void Truck::Moving() {
 
 	DRAW();
 }
+
+COORD Truck::GetPos()const {
+
+	return pos;
+}
+
+bool Truck::GetState()const {
+
+	return state;
+
+}

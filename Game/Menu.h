@@ -15,7 +15,9 @@ private:
 	vector<Key*>Option_Keys;
 
 	string CR[20];
-	bool p_music,p_game,quit;
+	bool /*p_music*/p_game;
+	bool quit, l_game;
+
 
 	void iniCR();
 	void DRAW_CR();
@@ -41,7 +43,12 @@ private:
 
 public:
 	Menu();
-	bool IsQuit();
+	bool p_music;
+	bool IsQuit()const;
+	bool IsPlay()const;
+	bool IsLoad()const;
+
+	void setbool();
 
 	void Choose_Menu();
 	void DrawMenu();

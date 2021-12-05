@@ -4,14 +4,15 @@ Menu::Menu() {
 	state = 1;
 	p_music = true;
 	p_game = false;
+	l_game = false;
+	quit = false;
 }
 
 void Menu::pMenu_Music() {
 	if(p_music)
-		PlaySound(L"./sound/welcome.wav", NULL, SND_LOOP | SND_ASYNC);
+		PlaySound(L"./sound/welcome.wav", NULL, SND_LOOP |SND_FILENAME| SND_ASYNC);
 	else
 		PlaySound(NULL, 0, 0);
-
 }
 
 void Menu::iniMenu() {
@@ -90,6 +91,7 @@ void Menu::DrawMenu() {
 	DRAW_CR();
 	Draw_Chosen();
 	Draw_Option();
+
 }
 
 
@@ -189,20 +191,24 @@ void Menu::Choose_Menu() {
 	Choose();
 	switch (state) {
 		case 1:
-			//p_game = true;
+			
+			p_game = true;
 			Loading();
+			PlaySound(NULL, 0, 0);
 			break;
 		case 2:
-
-			//hitLoadGame();
+			l_game = true;
+			system("cls");
 			break;
 
 		case 3:
+
 			hitOption();
 			Choose_Menu();
 			break;
 
 		case 4:
+
 			hitTutorial();
 			Choose_Menu();
 			break;
@@ -215,10 +221,24 @@ void Menu::Choose_Menu() {
 		case 6:
 			quit = true;
 			hitQuit();
+
 			break;
 	}
 }
 
-bool Menu:: IsQuit() {
+bool Menu::IsQuit()const {
 	return quit;
 }
+
+bool Menu::IsPlay()const {
+	return p_game;
+}
+
+bool Menu::IsLoad()const {
+	return l_game;
+}
+
+void Menu::setbool() {
+	p_game = l_game = false;
+}
+

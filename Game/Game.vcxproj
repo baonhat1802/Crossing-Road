@@ -173,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="graphic\About.txt" />
+    <Text Include="graphic\BLNT.txt" />
     <Text Include="graphic\car.txt" />
     <Text Include="graphic\crossingname.txt" />
     <Text Include="graphic\Loading.txt" />

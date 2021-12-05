@@ -48,7 +48,7 @@ void Boat::DRAW() {
 }
 
 void Boat::Moving() {
-	if (pos.X + width >= 220 || pos.X + width <= 40) {
+	if (pos.X + width >= 150 || pos.X + width <= 40) {
 		del(pos, { pos.X + width,pos.Y + height });
 		state = false;
 		pos = inpos;
@@ -76,4 +76,15 @@ void Boat::Moving() {
 	}
 
 	DRAW();
+}
+
+COORD Boat::GetPos()const {
+
+	return pos;
+}
+
+bool Boat::GetState()const {
+
+	return state;
+
 }
