@@ -48,8 +48,8 @@ void Console::setbuffer() {
 		exit(Status);
 	}
 
-//	GetConsoleScreenBufferInfo(hOut, &scrBufferInfo);
-//	cout << "Screen Buffer Size : " << scrBufferInfo.dwSize.X << " x " << scrBufferInfo.dwSize.Y << endl;
+	/*GetConsoleScreenBufferInfo(hOut, &scrBufferInfo);
+	cout << "Screen Buffer Size : " << scrBufferInfo.dwSize.X << " x " << scrBufferInfo.dwSize.Y << endl;*/
 }
 
 void Console::setfontsize(int a, int b) {
@@ -135,7 +135,7 @@ void DrawfromFile(const COORD&pos,const char* filename) {
 	short i = 0;
 	while(getline(filein, tmp)) {
 		SetConsoleTextAttribute(handle, WORD(rand() % 15 + 1));
-		GotoXY({ pos.X,pos.Y + i++ });
+		GotoXY({ pos.X, pos.Y + i++ });
 		cout << tmp<<"\n";
 	}
 

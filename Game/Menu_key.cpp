@@ -21,3 +21,9 @@ void Key::DRAW_Color(const int& Color_) {
 	DrawString(str, pos, Color_);
 
 }
+
+Key::~Key() {
+	pos = { 0,0 };
+	str.clear();
+	Color=0;
+}

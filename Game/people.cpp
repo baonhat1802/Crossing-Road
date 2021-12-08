@@ -72,7 +72,8 @@ void People::Moving(Map&map) {
 }
 
 bool People::IsDead() {
-	string hit = "()</|o";
+	Sleep(1);
+	string hit = "*.'w()</|\\o[]^~";
 	for (int i = 0; i < hit.length(); i++) {
 		if (
 			GetCOORD({ pos.X, pos.Y }) == hit[i] ||
@@ -88,7 +89,6 @@ bool People::IsDead() {
 			return state;
 		}
 	}
-
 	state = false;
 	return state;
 }
@@ -109,4 +109,25 @@ void People::Get_Start() {
 
 COORD People:: GetPos()const {
 	return pos;
+}
+
+void People::DrawDead() {
+	fstream filein;
+	filein.open("graphic/ded.txt");
+	string tmp;
+	int i = 0;
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(7));
+	while (getline(filein, tmp)) {
+		GotoXY({ 50,15+short(i) });
+		if (i == 19) {
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(10));
+			cout << tmp<<endl;
+		}
+		else
+			cout << tmp<<endl;
+		i++;
+		Sleep(50);
+	}
+	Sleep(2000);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(15));
 }

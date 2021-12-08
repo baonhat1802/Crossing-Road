@@ -1,19 +1,26 @@
 #include "Game.h"
 void Game:: ini() {
-	g_process=g_running=p_music = true;
-	speed = 100;
+	g_process = g_running =  true;
+	speed = 10;
 	level = 0;
 	maxlevel=10;
-
 }
 
-void Game:: iniBoat() {
+void Game::iniBoat() {
 	Clear_Boat();
 
 	for (int i = 0; i < 3; i++)
 		listBoat.push_back(new Boat({ 110,20 }, 28, 4, "graphic/boat1.txt", 0, 0));//32
+}
+
+void Game::iniShark() {
+	Clear_Shark();
+
+	for (int i = 0; i < 3; i++)
+		listShark.push_back(new Shark({ 11,36 }, 27, 4, "graphic/shark.txt", 1, 0));
 
 }
+
 void Game:: iniCar() {
 	Clear_Car();
 	
@@ -32,7 +39,7 @@ void Game::iniTruck() {
 }
 
 void Game::iniMap() {
-	map=new Map({ 10,5 }, 101, 41, "graphic/map1.txt");
+	map=new Map({ 10,5 }, 128, 41, "graphic/map1.txt"); // 101
 }
 
 void Game::iniPeople() {
@@ -46,7 +53,7 @@ void Game:: iniTL() {
 
 	ListLight.push_back(new TrafficLight ({ 13,12 }, 3, 3, "graphic/TrafficL.txt", 0));
 
-	ListLight.push_back(new TrafficLight({ 105,28 }, 3, 3, "graphic/TrafficL.txt", 0));
+	ListLight.push_back(new TrafficLight({ 13,28 }, 3, 3, "graphic/TrafficL.txt", 0));
 }
 
 void Game::iniMenu() {
@@ -82,7 +89,6 @@ void Game::Clear_Truck() {
 
 	Trucklist1.clear();
 	Trucklist2.clear();
-
 }
 
 void Game::Clear_People() {
@@ -102,6 +108,14 @@ void Game::Clear_Boat() {
 			delete e;
 		}
 	listBoat.clear();
+}
+
+void Game::Clear_Shark() {
+	if (!listShark.empty())
+		for (auto& e : listShark) {
+			delete e;
+		}
+	listShark.clear();
 }
 
 void Game::Clear_Map() {
@@ -154,15 +168,15 @@ void Game::p_ingame() {
 	p->Moving(*map);
 	if (p->IsOnTop())
 	{
-		speed -= 10;
+		speed--;
 		level++;
+		score = level * 100;
 		p->Get_Start();
 	}
 }
 
 void Game::RunGame() {
 	while (!GameOver() and g_running) {
-
 		TFcontrol(ListLight);
 		p_ingame();
 
@@ -177,7 +191,18 @@ void Game::RunGame() {
 			Moving(Trucklist2, i5, dis5);
 		}
 
-		Sleep(speed);
+		Moving(listShark, i6, dis6);
+
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(11));
+		GotoXY({ 116,21 });
+		cout << "> LEVEL: " << level << "/" << maxlevel;
+		GotoXY({ 116,22 });
+		cout << "> SCORE: " << score;
+
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(15));
+
+		//GotoXY({ (p->GetPos().X , p->GetPos().Y )});
+		Sleep(50);
 	}
 }
 
@@ -189,9 +214,12 @@ void Game::ResetGame() {
 	dis5 = 0, i5 = 0;
 	dis6 = 0, i6 = 0;
 
+	level = score = 0;
+
 	ini();
 
 	iniBoat();
+	iniShark();
 	iniCar();
 	iniTruck();
 
@@ -200,6 +228,13 @@ void Game::ResetGame() {
 	iniTL();
 	map->DRAW();
 	PlayMusic();
+
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(11));
+	GotoXY({ 116,21 });
+	cout << "> LEVEL: " << level << "/" << maxlevel;
+	GotoXY({ 116,22 });
+	cout << "> SCORE: " << score;
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(15));
 }
 
 bool Game::WinGame() {
@@ -232,43 +267,67 @@ void Game::Running(const char & A) {
 	bool IsLose = false, IsWin = false;;
 
 	char c = A;
+
 	if (c == 'L') {
-		LoadGame("BaoNhat");
+		LoadGame();
 	}
+	
 	while (g_process) {
 
 		if (GameOver() and !IsLose) {
+			Sleep(100);
+			PlaySound(0, NULL, NULL);
 			if (g_running)
 			{
 				g_running = false;
 				g_play.join();
-
 			}
-			system("cls");
+			PlaySound(L"./sound/lose.wav", NULL, SND_FILENAME | SND_ASYNC);
+			p->DrawDead();
+
 			IsLose = true;
+			//End();
+			
+			system("cls");
 			DrawfromFile({ 30,0 }, "graphic/BLNT.txt");
+			GotoXY({ 73,20 });
+			cout << "SCORE : " << score;
+			PlaySound(L"./sound/dead.wav", NULL, SND_FILENAME | SND_ASYNC);
 			GotoXY({ 66,42 });
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(240));
 			cout << "Press Esc to back to Menu";
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(15));
+			if (_kbhit()) {
+				c = toupper(_getch());
+				if (c == 27) {
+					system("cls");
+					break;
+				}
+			}
 		}
 
 		if (WinGame() and !IsWin) {
+			Sleep(100);
+			PlaySound(0, NULL, NULL);
 			if (g_running)
 			{
 				g_running = false;
 				g_play.join();
-
 			}
-			system("cls");
 
+			PlaySound(L"./sound/win.wav", NULL, SND_FILENAME | SND_ASYNC);
 			IsWin = true;
-
-			DrawfromFile({ 30,0 }, "graphic/BLNT.txt");
+			system("cls");
+			DrawfromFile({ 0,0 }, "graphic/win.txt");
 			GotoXY({ 66,42 });
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(240));
-			cout << "Press Esc to back to Menu";
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(15));
+			if (_kbhit()) {
+				c = toupper(_getch());
+				if (c == 27) {
+					system("cls");
+					break;
+				}
+			}
 		}
 
 		if (_kbhit()) {
@@ -285,17 +344,16 @@ void Game::Running(const char & A) {
 				SaveGame();
 				break;
 			case 'L':
-				LoadGame("BaoNhat");
+				LoadGame();
 				break;
 			case 'O':
 				PauseMusic();
 				break;
-			case 27://Esc 
+			case 27://Esc
 				if (g_running)
 				{
 					g_running = false;
 					g_play.join();
-
 				}
 				g_process = false;
 				system("cls");
@@ -308,7 +366,7 @@ void Game::Running(const char & A) {
 }
 
 void Game::PauseGame() {
-	if (g_running)
+	if (g_running )
 	{
 		g_running = false;
 		g_play.join();
@@ -333,20 +391,43 @@ void Game::Reset() {
 }
 
 void Game::SaveGame(){
+	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+	if(g_running==true)
 	PauseGame();
 
 	string name;
-	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
-	GotoXY({ 0, 0 });
-	cout << "Input name : ";
+	
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(11));
+	GotoXY({ 113, 32 });
+
+	cout << "> Input name: ";
 	getline(cin, name);
-	del({ 0,0 }, { short(0+ name.length()+15),1});
-	GotoXY({ 0,0 });
+
+	for (int i = 0; i <8; i++) {
+		GotoXY({ 113, 33 });
+		if(i%2==0)
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(0));
+		else
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(240));
+		cout << "Save game successfully !";
+		Sleep(400);
+	}
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(15));
+	del({ 113,32 }, { 162 ,34 });
+
+	//map->DRAW();
+
+	//del({ 0,0 }, { short(0+ name.length()+15),1});
+	//GotoXY({ 0,0 });
 	
 	fstream fileout;
 
 	fileout.open("save/" + name + ".txt", ios::out);
-	fileout << speed<<"\n";
+
+	fileout << level << "\n";
+	fileout << score << "\n";
+
+	fileout << speed << "\n";
 	fileout << "People\n";
 	fileout << p->GetPos().X << " " << p->GetPos().Y<<"\n";
 
@@ -354,30 +435,40 @@ void Game::SaveGame(){
 	for (int i = 0; i < 3; i++) {
 		fileout << Carlist1[i]->GetState()<<"\n";
 		fileout << Carlist1[i]->GetPos().X << " " << Carlist1[i]->GetPos().Y<<"\n";
+		Carlist1[i]->DRAW();
 	}
 
 	fileout << "Car2\n";
 	for (int i = 0; i < 3; i++) {
 		fileout << Carlist2[i]->GetState()<<"\n";
 		fileout << Carlist2[i]->GetPos().X << " " << Carlist2[i]->GetPos().Y<<"\n";
+		Carlist2[i]->DRAW();
 	}
 
 	fileout << "Truck1\n";
 	for (int i = 0; i < 3; i++) {
 		fileout << Trucklist1[i]->GetState() << "\n";
 		fileout << Trucklist1[i]->GetPos().X << " " << Trucklist1[i]->GetPos().Y << "\n";
+		Trucklist1[i]->DRAW();
 	}
 
 	fileout << "Truck2" << "\n";
 	for (int i = 0; i < 3; i++) {
 		fileout << Trucklist2[i]->GetState() << "\n";
 		fileout << Trucklist2[i]->GetPos().X << " " << Trucklist2[i]->GetPos().Y << "\n";
+		Trucklist2[i]->DRAW();
 	}
 
 	fileout << "Boat" << "\n";
 	for (int i = 0; i < 3; i++) {
 		fileout << listBoat[i]->GetState() << "\n";
 		fileout << listBoat[i]->GetPos().X << " " << listBoat[i]->GetPos().Y << "\n";
+	}
+
+	fileout << "Shark" << "\n";
+	for (int i = 0; i < 3; i++) {
+		fileout << listShark[i]->GetState() << "\n";
+		fileout << listShark[i]->GetPos().X << " " << listShark[i]->GetPos().Y << "\n";
 	}
 
 	fileout << "TL" << "\n";
@@ -398,28 +489,48 @@ void Game::SaveGame(){
 
 }
 
-void Game::LoadGame(const string& name) {
+void Game::LoadGame() {
+	if (g_running == true)
 	PauseGame();
-	
-	fstream filein;
-	filein.open("save/" + name + ".txt");
+	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 
+	string user_load_game;
+
+	if (profile_load != "") {
+		user_load_game = profile_load;
+	} 
+
+	else {
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(11));
+		GotoXY({ 113, 32 });
+		cout << "> Input name: ";
+		getline(cin, user_load_game);
+	}
+
+	fstream filein;
+	filein.open("save/" + user_load_game + ".txt");
+
+	profile_load.clear();
 	if (filein.fail()) {
 
 		filein.close();
 
-		GotoXY({ 0,0 });
-		cout << "Can not open your save";
+		GotoXY({ 113,33 });
+		cout << "Cannot load your save !";
+		Sleep(300);
+		del({ 113,32 }, { 162,34 });
 
 		PauseGame();
 		return;
 	}
+
 
 	Clear_Car();
 	Clear_Truck();
 	Clear_People();
 	Clear_TL();
 	Clear_Boat();
+	Clear_Shark();
 	Clear_Map();
 
 	del({ 0,0 }, { 115,48 });
@@ -430,9 +541,14 @@ void Game::LoadGame(const string& name) {
 	short X, Y;
 	bool State;
 
+	filein >> level;
+	filein >> score;
+
 	filein >> speed;
 	filein >> tmp;
+
 	filein >> X >> Y;
+
 	p = new People({ X,Y }, 3, 3, "graphic/people.txt", 0);
 
 	filein >> tmp;
@@ -485,6 +601,16 @@ void Game::LoadGame(const string& name) {
 		listBoat[i]->DRAW();
 	}
 
+	filein >> tmp;
+	for (int i = 0; i < 3; i++) {
+		filein >> State;
+		filein >> X >> Y;
+
+		listShark.push_back(new Shark({ X, Y }, 27, 4, "graphic/shark.txt", 1, State));
+		listShark[i]->SetInpos({11, 36});
+		listShark[i]->DRAW();
+	}
+
 	filein >>tmp;
 	filein >> State;
 	ListLight.push_back(new TrafficLight({ 13,12 }, 3, 3, "graphic/TrafficL.txt", State));
@@ -499,22 +625,57 @@ void Game::LoadGame(const string& name) {
 	filein >> dis6 >> i6;
 
 	filein.close();
-
 	PauseGame();
 }
 
 void Game::Process() {
 	iniMenu();
-	while (!menu->IsQuit()) {
+	while (!menu->IsQuit())
+	{
+		//string profile;
+
 		menu->Choose_Menu();
 
 		if (menu->IsPlay()) {
 			Running(' ');
 		}
 
-		else if (menu->IsLoad())
+		if (menu->IsLoad(profile_load)) {
 			Running('L');
+		}
 
 		menu->setbool();
 	}
+}
+
+Game::~Game() {
+
+	dis1 = 0, i1 = 0;
+	dis2 = 0, i2 = 0;
+	dis3 = 0, i3 = 0;
+	dis4 = 0, i4 = 0;
+	dis5 = 0, i5 = 0;
+	dis6 = 0, i6 = 0;
+
+	dis1 = i1 = NULL;
+	dis2 = i2 = NULL;
+	dis3 = i3 = NULL;
+	dis4 = i4 = NULL;
+	dis5 = i5 = NULL;
+	dis6 = i6 = NULL;
+
+	Clear_Menu();
+	Clear_Car();
+	Clear_Truck();
+	Clear_People();
+	Clear_TL();
+	Clear_Boat();
+	Clear_Shark();
+	Clear_Map();
+
+	profile_load.clear();
+
+	speed= score= level= maxlevel=NULL;
+	g_play.~thread();
+	g_running=g_process=p_music =NULL;
 }

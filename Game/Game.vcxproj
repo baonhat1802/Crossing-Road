@@ -29,13 +29,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -48,7 +48,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -149,7 +149,6 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Menu_key.cpp" />
     <ClCompile Include="people.cpp" />
-    <ClCompile Include="SaveGame.cpp" />
     <ClCompile Include="Shark.cpp" />
     <ClCompile Include="TrafficLiight.cpp" />
     <ClCompile Include="truck.cpp" />
@@ -166,21 +165,26 @@
     <ClInclude Include="Menu_Key.h" />
     <ClInclude Include="people.h" />
     <ClInclude Include="SaveGame.h" />
-    <ClInclude Include="shark.h" />
+    <ClInclude Include="Shark.h" />
     <ClInclude Include="TrafficLight.h" />
     <ClInclude Include="truck.h" />
     <ClInclude Include="Vehicle.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="C:\Users\USer\Downloads\Source (1).txt" />
     <Text Include="graphic\About.txt" />
+    <Text Include="graphic\Big-Chungus.txt" />
     <Text Include="graphic\BLNT.txt" />
     <Text Include="graphic\car.txt" />
     <Text Include="graphic\crossingname.txt" />
+    <Text Include="graphic\ded.txt" />
+    <Text Include="graphic\loadgame1.txt" />
     <Text Include="graphic\Loading.txt" />
     <Text Include="graphic\map1.txt" />
     <Text Include="graphic\Rules.txt" />
     <Text Include="graphic\shark.txt" />
     <Text Include="graphic\truck.txt" />
+    <Text Include="graphic\win.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

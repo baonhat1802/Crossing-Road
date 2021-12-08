@@ -7,8 +7,6 @@ void Truck::DRAW() {
 		for (int j = 0; j < width; j++) {
 			if (position.X + j >= 20 && position.X + j <= 108)
 				cout << graphic[i][j];
-			else
-				continue;
 		}
 	}
 }

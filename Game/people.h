@@ -9,10 +9,11 @@ private :
 	bool state;
 	static friend class Map;
 public	:
+
 	People(const COORD& pos_, const short& height_, const short& width_, const char *filename, bool IsDead_);
 	void DRAW();
 	void Moving(Map&map);
-
+	void DrawDead();
 	bool IsDead();
 	bool IsOnTop();
 
