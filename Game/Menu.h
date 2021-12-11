@@ -6,7 +6,9 @@ class Menu : public Key{
 private:
 	//Menu Key
 	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+
 	int state = 1;
+
 	Key* NewGame, *LoadGame, *Options, *Tutorial, *About, *Quit;
 	// Option Key
 	Key* On_M, * Off_M,* Return;

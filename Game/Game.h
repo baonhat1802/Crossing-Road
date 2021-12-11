@@ -58,8 +58,7 @@ private:
 	template<class T>
 	void Moving(vector<T*>& obj, int& i, int& dis);
 
-	template<class T>
-	void TFcontrol(vector<T*>& obj);
+	void TFcontrol();
 	bool GameOver();
 	bool WinGame();
 

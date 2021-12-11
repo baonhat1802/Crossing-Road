@@ -10,6 +10,7 @@ void Truck::DRAW() {
 		}
 	}
 }
+
 bool Truck::isMoving()
 {
 	return state;
@@ -25,6 +26,7 @@ void Truck::Moving() {
 		state = true;
 		return;
 	}
+
 	if (pos.X + width >= 140 || pos.X + width <= 32) {
 		del(pos, { pos.X + width,pos.Y + height });
 		state = false;

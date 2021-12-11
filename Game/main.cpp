@@ -2,6 +2,7 @@
 #include "Game.h"
 
 int main() {
+
 	Console handle;
 	
 	handle.SetConsole(15, 1150, 800, false);
@@ -10,4 +11,5 @@ int main() {
 	g.Process();
 
 	system("pause>null");
+	
 }

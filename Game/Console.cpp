@@ -1,7 +1,7 @@
 #include "Console.h"
 
 void Console::FixConsoleWindow() {
-	HWND consoleWindow = GetConsoleWindow();
+	HWND consoleWindow = GetConsoleWindow(); 
 	LONG style = GetWindowLong(consoleWindow, GWL_STYLE);
 	style = style & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME);
 	SetWindowLong(consoleWindow, GWL_STYLE, style);
@@ -84,12 +84,12 @@ void Console::QuickEdit(bool flag) {
 void Console::setTitle() {
 
 	SetConsoleTitle(L"Crossing Road");
-
+	
 }
 
-void Console::SetConsole(const int& fontsize, const int& width, const int& height, bool quickEdit) {
+void Console::SetConsole(const int& fontsize, const int& width, const int& height, const bool &quickEdit) {
 
-	setTitle();
+	//setTitle();
 	FixConsoleWindow();
 	setfontsize(fontsize, fontsize);
 	SetSize(width, height);

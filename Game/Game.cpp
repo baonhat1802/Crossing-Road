@@ -1,7 +1,7 @@
 #include "Game.h"
 void Game:: ini() {
 	g_process = g_running =  true;
-	speed = 10;
+	speed = 50;
 	level = 0;
 	maxlevel=10;
 }
@@ -24,7 +24,7 @@ void Game::iniShark() {
 void Game:: iniCar() {
 	Clear_Car();
 	
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		Carlist1.push_back(new Car({ 15,10 }, 15, 3, "graphic/car.txt", 1, 0));
 		Carlist2.push_back(new Car({ 15,26 }, 15, 3, "graphic/car.txt", 1, 0));
 	}
@@ -32,7 +32,7 @@ void Game:: iniCar() {
 void Game::iniTruck() {
 	Clear_Truck();
 
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		Trucklist1.push_back(new Truck({ 110,15 }, 21, 3, "graphic/truck.txt", 0, 0));
 		Trucklist2.push_back(new Truck({ 110,31 }, 21, 3, "graphic/truck.txt", 0, 0));
 	}
@@ -139,17 +139,18 @@ void Game::Moving(vector<T*> & obj, int& i, int& dis) {
 			i++;
 		}
 
-		if (dis >= obj[i - 1]->getWidth() +5+ (rand() % 30) )
+		if (dis >= obj[i - 1]->getWidth() +5+ (rand() % 15) )
 		{
-			if (i == obj.size())i = 0;
+			if (i == obj.size()) i = 0;
 			else obj[i]->Moving(), i++;
 
 			dis = 0;
 		}
 		else dis++;
 }
-template<class T>
-void Game::TFcontrol(vector<T*>& obj) {
+
+
+void Game::TFcontrol() {
 	for (int i = 0; i < 2; i++)
 	{
 		ListLight[i]->ControlTraffic();
@@ -168,7 +169,7 @@ void Game::p_ingame() {
 	p->Moving(*map);
 	if (p->IsOnTop())
 	{
-		speed--;
+		speed-=5;
 		level++;
 		score = level * 100;
 		p->Get_Start();
@@ -177,7 +178,7 @@ void Game::p_ingame() {
 
 void Game::RunGame() {
 	while (!GameOver() and g_running) {
-		TFcontrol(ListLight);
+		TFcontrol();
 		p_ingame();
 
 		if (!ListLight[0]->GetState()) {
@@ -186,6 +187,7 @@ void Game::RunGame() {
 		}
 
 		Moving(listBoat, i3, dis3);
+
 		if (!ListLight[1]->GetState()) {
 			Moving(Carlist2, i4, dis4);
 			Moving(Trucklist2, i5, dis5);
@@ -202,7 +204,7 @@ void Game::RunGame() {
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(15));
 
 		//GotoXY({ (p->GetPos().X , p->GetPos().Y )});
-		Sleep(50);
+		Sleep(speed);
 	}
 }
 
@@ -264,7 +266,7 @@ void Game::PauseMusic() {
 void Game::Running(const char & A) {
 	ResetGame();
 	g_play = thread(&Game::RunGame, this);
-	bool IsLose = false, IsWin = false;;
+	bool IsLose = false, IsWin = false;
 
 	char c = A;
 
@@ -355,7 +357,12 @@ void Game::Running(const char & A) {
 					g_running = false;
 					g_play.join();
 				}
+
 				g_process = false;
+				if (IsWin || IsLose) {
+					mciSendString(L"play ./sound/CJ.wav ", NULL, 0, NULL);
+					Sleep(3000);
+				}
 				system("cls");
 
 				break;
@@ -414,11 +421,6 @@ void Game::SaveGame(){
 	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(15));
 	del({ 113,32 }, { 162 ,34 });
-
-	//map->DRAW();
-
-	//del({ 0,0 }, { short(0+ name.length()+15),1});
-	//GotoXY({ 0,0 });
 	
 	fstream fileout;
 
@@ -432,28 +434,28 @@ void Game::SaveGame(){
 	fileout << p->GetPos().X << " " << p->GetPos().Y<<"\n";
 
 	fileout << "Car1\n";
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		fileout << Carlist1[i]->GetState()<<"\n";
 		fileout << Carlist1[i]->GetPos().X << " " << Carlist1[i]->GetPos().Y<<"\n";
 		Carlist1[i]->DRAW();
 	}
 
 	fileout << "Car2\n";
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		fileout << Carlist2[i]->GetState()<<"\n";
 		fileout << Carlist2[i]->GetPos().X << " " << Carlist2[i]->GetPos().Y<<"\n";
 		Carlist2[i]->DRAW();
 	}
 
 	fileout << "Truck1\n";
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		fileout << Trucklist1[i]->GetState() << "\n";
 		fileout << Trucklist1[i]->GetPos().X << " " << Trucklist1[i]->GetPos().Y << "\n";
 		Trucklist1[i]->DRAW();
 	}
 
 	fileout << "Truck2" << "\n";
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		fileout << Trucklist2[i]->GetState() << "\n";
 		fileout << Trucklist2[i]->GetPos().X << " " << Trucklist2[i]->GetPos().Y << "\n";
 		Trucklist2[i]->DRAW();
@@ -492,6 +494,7 @@ void Game::SaveGame(){
 void Game::LoadGame() {
 	if (g_running == true)
 	PauseGame();
+
 	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 
 	string user_load_game;
@@ -507,6 +510,7 @@ void Game::LoadGame() {
 		getline(cin, user_load_game);
 	}
 
+	//cin.clear();
 	fstream filein;
 	filein.open("save/" + user_load_game + ".txt");
 
@@ -517,7 +521,7 @@ void Game::LoadGame() {
 
 		GotoXY({ 113,33 });
 		cout << "Cannot load your save !";
-		Sleep(300);
+		Sleep(2000);
 		del({ 113,32 }, { 162,34 });
 
 		PauseGame();
@@ -552,7 +556,7 @@ void Game::LoadGame() {
 	p = new People({ X,Y }, 3, 3, "graphic/people.txt", 0);
 
 	filein >> tmp;
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		filein >> State;
 		filein >> X >> Y;
 
@@ -562,7 +566,7 @@ void Game::LoadGame() {
 	}
 
 	filein >> tmp;
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		filein >> State;
 		filein >> X >> Y;
 
@@ -572,7 +576,7 @@ void Game::LoadGame() {
 	}
 
 	filein >> tmp;
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		filein >> State;
 		filein >> X >> Y;
 
@@ -582,7 +586,7 @@ void Game::LoadGame() {
 	}
 
 	filein >> tmp;
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		filein >> State;
 		filein >> X >> Y;
 

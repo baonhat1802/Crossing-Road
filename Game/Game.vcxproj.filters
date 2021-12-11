@@ -92,9 +92,6 @@
     <ClInclude Include="Shark.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SaveGame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>

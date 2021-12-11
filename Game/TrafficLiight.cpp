@@ -20,6 +20,7 @@ TrafficLight::TrafficLight(const COORD& pos_, const short& width_, const short& 
 	infile.close();
 
 }
+
 void TrafficLight::DRAW() {
 	COORD position = pos;
 	for (int i = 0; i < height; i++) {

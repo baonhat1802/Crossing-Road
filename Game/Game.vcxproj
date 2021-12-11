@@ -164,7 +164,6 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Menu_Key.h" />
     <ClInclude Include="people.h" />
-    <ClInclude Include="SaveGame.h" />
     <ClInclude Include="Shark.h" />
     <ClInclude Include="TrafficLight.h" />
     <ClInclude Include="truck.h" />
