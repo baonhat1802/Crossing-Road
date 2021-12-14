@@ -24,6 +24,6 @@ public:
 
 	virtual bool isMoving()=0;
 
-	~Vehicle();
+	virtual ~Vehicle();
 
 };

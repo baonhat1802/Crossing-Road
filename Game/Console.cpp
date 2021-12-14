@@ -48,8 +48,6 @@ void Console::setbuffer() {
 		exit(Status);
 	}
 
-	/*GetConsoleScreenBufferInfo(hOut, &scrBufferInfo);
-	cout << "Screen Buffer Size : " << scrBufferInfo.dwSize.X << " x " << scrBufferInfo.dwSize.Y << endl;*/
 }
 
 void Console::setfontsize(int a, int b) {

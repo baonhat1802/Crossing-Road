@@ -15,8 +15,4 @@ public:
 
 	COORD GetPos()const;
 	bool GetState()const;
-
-	/*char* backup();
-
-	void DRAWBU(const char*a);*/
 };

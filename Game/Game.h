@@ -72,12 +72,12 @@ private:
 
 	void PlayMusic();
 	void PauseMusic();
-	
-public:
-
 	void LoadGame();
 	void Running(const char&A);
 	void RunGame();
+	
+public:
+
 	void Process();
 	~Game();
 

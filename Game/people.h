@@ -7,7 +7,7 @@ private :
 	short height, width;
 	char graphic[100][100];
 	bool state;
-	static friend class Map;
+	//static friend class Map;
 public	:
 
 	People(const COORD& pos_, const short& height_, const short& width_, const char *filename, bool IsDead_);

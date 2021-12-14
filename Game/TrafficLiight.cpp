@@ -38,7 +38,7 @@ void TrafficLight::DRAW() {
 }
 
 void TrafficLight::ControlTraffic() {
-	int t = 15 + rand() % 100;
+	int t = 50 + rand() % 100;
 	if (time >= t)State = !State, time = 0;
 	else time++;
 

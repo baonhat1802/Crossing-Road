@@ -72,7 +72,6 @@ void People::Moving(Map&map) {
 }
 
 bool People::IsDead() {
-	Sleep(1);
 	string hit = "*.'w()</|\\o[]^~";
 	for (int i = 0; i < hit.length(); i++) {
 		if (

@@ -24,7 +24,7 @@ void Game::iniShark() {
 void Game:: iniCar() {
 	Clear_Car();
 	
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 3; i++) {
 		Carlist1.push_back(new Car({ 15,10 }, 15, 3, "graphic/car.txt", 1, 0));
 		Carlist2.push_back(new Car({ 15,26 }, 15, 3, "graphic/car.txt", 1, 0));
 	}
@@ -32,7 +32,7 @@ void Game:: iniCar() {
 void Game::iniTruck() {
 	Clear_Truck();
 
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 3; i++) {
 		Trucklist1.push_back(new Truck({ 110,15 }, 21, 3, "graphic/truck.txt", 0, 0));
 		Trucklist2.push_back(new Truck({ 110,31 }, 21, 3, "graphic/truck.txt", 0, 0));
 	}
@@ -139,7 +139,7 @@ void Game::Moving(vector<T*> & obj, int& i, int& dis) {
 			i++;
 		}
 
-		if (dis >= obj[i - 1]->getWidth() +5+ (rand() % 15) )
+		if (dis >= obj[i - 1]->getWidth() + 5 + (rand() % 30))
 		{
 			if (i == obj.size()) i = 0;
 			else obj[i]->Moving(), i++;
@@ -299,13 +299,21 @@ void Game::Running(const char & A) {
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(240));
 			cout << "Press Esc to back to Menu";
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(15));
-			if (_kbhit()) {
-				c = toupper(_getch());
-				if (c == 27) {
-					system("cls");
-					break;
+			while (true){
+				if (_kbhit()) {
+					c = toupper(_getch());
+					if (c == 27) {
+					g_process = false;
+				if (IsWin || IsLose) {
+					mciSendString(L"play ./sound/CJ.wav ", NULL, 0, NULL);
+					Sleep(3000);
+				}
+				system("cls");
+						break;
+					}
 				}
 			}
+			continue;
 		}
 
 		if (WinGame() and !IsWin) {
@@ -323,13 +331,21 @@ void Game::Running(const char & A) {
 			DrawfromFile({ 0,0 }, "graphic/win.txt");
 			GotoXY({ 66,42 });
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(15));
-			if (_kbhit()) {
-				c = toupper(_getch());
-				if (c == 27) {
-					system("cls");
-					break;
+			while (true) {
+				if (_kbhit()) {
+					c = toupper(_getch());
+					if (c == 27) {
+						g_process = false;
+						if (IsWin || IsLose) {
+							mciSendString(L"play ./sound/CJ.wav ", NULL, 0, NULL);
+							Sleep(3000);
+						}
+						system("cls");
+						break;
+					}
 				}
 			}
+			continue;
 		}
 
 		if (_kbhit()) {
@@ -359,10 +375,6 @@ void Game::Running(const char & A) {
 				}
 
 				g_process = false;
-				if (IsWin || IsLose) {
-					mciSendString(L"play ./sound/CJ.wav ", NULL, 0, NULL);
-					Sleep(3000);
-				}
 				system("cls");
 
 				break;
@@ -434,28 +446,28 @@ void Game::SaveGame(){
 	fileout << p->GetPos().X << " " << p->GetPos().Y<<"\n";
 
 	fileout << "Car1\n";
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 3; i++) {
 		fileout << Carlist1[i]->GetState()<<"\n";
 		fileout << Carlist1[i]->GetPos().X << " " << Carlist1[i]->GetPos().Y<<"\n";
 		Carlist1[i]->DRAW();
 	}
 
 	fileout << "Car2\n";
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 3; i++) {
 		fileout << Carlist2[i]->GetState()<<"\n";
 		fileout << Carlist2[i]->GetPos().X << " " << Carlist2[i]->GetPos().Y<<"\n";
 		Carlist2[i]->DRAW();
 	}
 
 	fileout << "Truck1\n";
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 3; i++) {
 		fileout << Trucklist1[i]->GetState() << "\n";
 		fileout << Trucklist1[i]->GetPos().X << " " << Trucklist1[i]->GetPos().Y << "\n";
 		Trucklist1[i]->DRAW();
 	}
 
 	fileout << "Truck2" << "\n";
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 3; i++) {
 		fileout << Trucklist2[i]->GetState() << "\n";
 		fileout << Trucklist2[i]->GetPos().X << " " << Trucklist2[i]->GetPos().Y << "\n";
 		Trucklist2[i]->DRAW();
@@ -556,7 +568,7 @@ void Game::LoadGame() {
 	p = new People({ X,Y }, 3, 3, "graphic/people.txt", 0);
 
 	filein >> tmp;
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 3; i++) {
 		filein >> State;
 		filein >> X >> Y;
 
@@ -566,7 +578,7 @@ void Game::LoadGame() {
 	}
 
 	filein >> tmp;
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 3; i++) {
 		filein >> State;
 		filein >> X >> Y;
 
@@ -576,7 +588,7 @@ void Game::LoadGame() {
 	}
 
 	filein >> tmp;
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 3; i++) {
 		filein >> State;
 		filein >> X >> Y;
 
@@ -586,7 +598,7 @@ void Game::LoadGame() {
 	}
 
 	filein >> tmp;
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 3; i++) {
 		filein >> State;
 		filein >> X >> Y;
 
@@ -619,7 +631,7 @@ void Game::LoadGame() {
 	filein >> State;
 	ListLight.push_back(new TrafficLight({ 13,12 }, 3, 3, "graphic/TrafficL.txt", State));
 	filein >> State;
-	ListLight.push_back(new TrafficLight({ 105,28 }, 3, 3, "graphic/TrafficL.txt", State));
+	ListLight.push_back(new TrafficLight({ 13,28 }, 3, 3, "graphic/TrafficL.txt", State));
 
 	filein >> dis1 >> i1;
 	filein >> dis2 >> i2;

@@ -19,5 +19,5 @@ public:
 
 	virtual bool isMoving() = 0;
 
-	~Animal();
+	virtual ~Animal();
 };

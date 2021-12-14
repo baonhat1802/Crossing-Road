@@ -175,13 +175,13 @@ void Menu::hitTutorial() {
 	DrawfromFile({ 30,0 }, "graphic/Rules.txt");
 	GotoXY({ 69,47 });
 	SetConsoleTextAttribute(handle, WORD(240));
-	cout << "Press ""Enter"" to back to Menu ";
+	cout << "Press ""ESC"" to back to Menu ";
 	char c = ' ';
 	while (true) {
 		if (_kbhit()) {
 			c = _getch();
 		}
-		if (c == 13)break;
+		if (c == 27)break;
 	}
 	SetConsoleTextAttribute(handle, WORD(15));
 	system("cls");

@@ -21,7 +21,6 @@ int Car::getWidth() {
 
 void Car::Moving() {
 	if (pos.X + width >= 125 || pos.X + width <= 10) {
-		//del(pos, { pos.X,pos.Y + height });
 		state = false;
 		pos = inpos;
 		return;
