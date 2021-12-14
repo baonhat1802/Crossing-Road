@@ -1,7 +1,7 @@
 #include "Console.h"
 
 void Console::FixConsoleWindow() {
-	HWND consoleWindow = GetConsoleWindow();
+	HWND consoleWindow = GetConsoleWindow(); 
 	LONG style = GetWindowLong(consoleWindow, GWL_STYLE);
 	style = style & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME);
 	SetWindowLong(consoleWindow, GWL_STYLE, style);
@@ -48,8 +48,6 @@ void Console::setbuffer() {
 		exit(Status);
 	}
 
-//	GetConsoleScreenBufferInfo(hOut, &scrBufferInfo);
-//	cout << "Screen Buffer Size : " << scrBufferInfo.dwSize.X << " x " << scrBufferInfo.dwSize.Y << endl;
 }
 
 void Console::setfontsize(int a, int b) {
@@ -84,12 +82,12 @@ void Console::QuickEdit(bool flag) {
 void Console::setTitle() {
 
 	SetConsoleTitle(L"Crossing Road");
-
+	
 }
 
-void Console::SetConsole(const int& fontsize, const int& width, const int& height, bool quickEdit) {
+void Console::SetConsole(const int& fontsize, const int& width, const int& height, const bool &quickEdit) {
 
-	setTitle();
+	//setTitle();
 	FixConsoleWindow();
 	setfontsize(fontsize, fontsize);
 	SetSize(width, height);
@@ -135,7 +133,7 @@ void DrawfromFile(const COORD&pos,const char* filename) {
 	short i = 0;
 	while(getline(filein, tmp)) {
 		SetConsoleTextAttribute(handle, WORD(rand() % 15 + 1));
-		GotoXY({ pos.X,pos.Y + i++ });
+		GotoXY({ pos.X, pos.Y + i++ });
 		cout << tmp<<"\n";
 	}
 

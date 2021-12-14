@@ -14,4 +14,6 @@ public:
 	void DRAW();
 
 	void DRAW_Color(const int& Color);
+
+	~Key();
 };

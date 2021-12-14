@@ -32,13 +32,13 @@ void People::DRAW() {
 
 void People::Moving(Map&map) {
 	
-		if (GetAsyncKeyState(int(0x41)) & 1 && GetKeyState(int(0x41)) >> 15) {
+		if (GetAsyncKeyState(int(0x41)) & 1 && GetKeyState(int(0x41)) >> 15) { 
 			del(pos, { pos.X + width,pos.Y + height });
 			if (pos.X >= 13)
 				pos.X--;
 			map.UpdateMap_people({ pos.X + width,pos.Y }, { pos.X + width - 1,pos.Y });
 			//PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
-			mciSendString(L"play ./sound/popsound.wav ", NULL, 0, NULL);
+			//mciSendString(L"play ./sound/popsound.wav ", NULL, 0, NULL);
 		}
 
 		if (GetAsyncKeyState(int(0x53)) & 1 && GetKeyState(int(0x53)) >> 15) {
@@ -47,7 +47,7 @@ void People::Moving(Map&map) {
 				pos.Y++;
 			map.UpdateMap_people({ pos.X,pos.Y - 1 }, pos);
 			//PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
-			mciSendString(L"play ./sound/popsound.wav ", NULL, 0, NULL);
+			//mciSendString(L"play ./sound/popsound.wav ", NULL, 0, NULL);
 		}
 
 		if (GetAsyncKeyState(int(0x57)) & 1 && GetKeyState(int(0x57)) >> 15) {
@@ -56,7 +56,7 @@ void People::Moving(Map&map) {
 				pos.Y--;
 			map.UpdateMap_people({ pos.X,pos.Y + height }, { pos.X,pos.Y + height - 1 });
 			//PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
-			mciSendString(L"play ./sound/popsound.wav ", NULL, 0, NULL);
+			//mciSendString(L"play ./sound/popsound.wav ", NULL, 0, NULL);
 		}
 
 		if (GetAsyncKeyState(int(0x44)) & 1 && GetKeyState(int(0x44)) >> 15) {
@@ -65,14 +65,14 @@ void People::Moving(Map&map) {
 				pos.X++;		
 			map.UpdateMap_people({ pos.X-1,pos.Y }, pos);
 			//PlaySound(L"./sound/popsound.wav", NULL, SND_FILENAME | SND_ASYNC);
-			mciSendString(L"play ./sound/popsound.wav ", NULL, 0, NULL);
+			//mciSendString(L"play ./sound/popsound.wav ", NULL, 0, NULL);
 		}
 
 		DRAW();
 }
 
 bool People::IsDead() {
-	string hit = "()</|o";
+	string hit = "*.'w()</|\\o[]^~";
 	for (int i = 0; i < hit.length(); i++) {
 		if (
 			GetCOORD({ pos.X, pos.Y }) == hit[i] ||
@@ -81,14 +81,13 @@ bool People::IsDead() {
 			GetCOORD({ pos.X + width,pos.Y + height }) == hit[i]
 			||
 			GetCOORD({ pos.X - 1, pos.Y + 1 }) == hit[i] ||
-			GetCOORD({ pos.X + width + 1, pos.Y + 1 }) == hit[i]
+			GetCOORD({ pos.X + width, pos.Y + 1 }) == hit[i]
 			)
 		{
 			state = true;
 			return state;
 		}
 	}
-
 	state = false;
 	return state;
 }
@@ -109,4 +108,25 @@ void People::Get_Start() {
 
 COORD People:: GetPos()const {
 	return pos;
+}
+
+void People::DrawDead() {
+	fstream filein;
+	filein.open("graphic/ded.txt");
+	string tmp;
+	int i = 0;
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(7));
+	while (getline(filein, tmp)) {
+		GotoXY({ 50,15+short(i) });
+		if (i == 19) {
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(10));
+			cout << tmp<<endl;
+		}
+		else
+			cout << tmp<<endl;
+		i++;
+		Sleep(50);
+	}
+	Sleep(2000);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WORD(15));
 }

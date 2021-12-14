@@ -33,7 +33,7 @@ public:
 
 	void QuickEdit(bool flag);
 
-	void SetConsole(const int& fontszie, const int& width, const int& height, bool quickEdit);
+	void SetConsole(const int& fontszie, const int& width, const int& height,const bool &quickEdit);
 
 };
 

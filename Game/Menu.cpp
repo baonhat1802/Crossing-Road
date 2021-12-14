@@ -1,6 +1,7 @@
 #include "Menu.h"
 
 Menu::Menu() {
+	load_profile = "";
 	state = 1;
 	p_music = true;
 	p_game = false;
@@ -41,21 +42,26 @@ void Menu::iniOptions() {
 
 void Menu::iniCR() {
 	fstream filein;
-	filein.open("graphic/crname.txt");
+	filein.open("graphic/crname.txt"); // cr
+
 	string tmp;
 	int i = 0;
+
 	while (getline(filein, tmp)) {
 		CR[i] = tmp;
 		i++;
 	}
+
 	filein.close();
 }
 
 void Menu::DRAW_CR() {
 	iniCR();
+	
 	short j = 0;
 	srand(time(NULL));
-	for (int i = 0; i < 17; i++) {
+
+	for (int i = 0; i < 19; i++) {
 	SetConsoleTextAttribute(handle, WORD(rand()%15+1));
 		GotoXY({ 12, j++ });
 		cout << CR[i];
@@ -63,8 +69,8 @@ void Menu::DRAW_CR() {
 }
 
 void Menu::ini() {
-	iniMenu();
 	iniCR();
+	iniMenu();
 	iniOptions();
 }
 
@@ -74,7 +80,6 @@ void Menu::Draw_Chosen() {
 
 	Menu_Keys[state-1]->DRAW_Color(240);
 	SetConsoleTextAttribute(handle, WORD(15));
-	
 }
 
 void Menu::Draw_Option() {
@@ -82,16 +87,13 @@ void Menu::Draw_Option() {
 		Option_Keys[0]->DRAW_Color(11);
 	else
 		Option_Keys[1]->DRAW_Color(11);
-
 }
 
 void Menu::DrawMenu() {
-	
 	ini();
 	DRAW_CR();
 	Draw_Chosen();
 	Draw_Option();
-
 }
 
 
@@ -135,13 +137,16 @@ void Menu::hitOption() {
 
 void Menu::Loading() {
 	system("cls");
+
 	DrawfromFile({ 50,10 }, "graphic/Loading.txt");
 	GotoXY({ 30,18 });
+
 	SetConsoleTextAttribute(handle, WORD(170));
 	for (int i = 0; i < 100; i++) {
 			cout << " ";
 		Sleep(10);
 	}
+	
 	SetConsoleTextAttribute(handle, WORD(15));
 	system("cls");
 }
@@ -152,13 +157,13 @@ void Menu::hitAbout() {
 	DrawfromFile({ 55,15 }, "graphic/About.txt");
 	GotoXY({67,32 });
 	SetConsoleTextAttribute(handle, WORD(240));
-	cout << "Press ""Enter"" to back to Menu ";
+	cout << "Press ""ESC"" to back to Menu ";
 	char c = ' ';
 	while (true) {
 		if (_kbhit()) {
 			c = _getch();
 		}
-		if (c == 13)break;
+		if (c == 27)break;
 	}
 	SetConsoleTextAttribute(handle, WORD(15));
 	system("cls");
@@ -170,15 +175,67 @@ void Menu::hitTutorial() {
 	DrawfromFile({ 30,0 }, "graphic/Rules.txt");
 	GotoXY({ 69,47 });
 	SetConsoleTextAttribute(handle, WORD(240));
-	cout << "Press ""Enter"" to back to Menu ";
+	cout << "Press ""ESC"" to back to Menu ";
 	char c = ' ';
 	while (true) {
 		if (_kbhit()) {
 			c = _getch();
 		}
-		if (c == 13)break;
+		if (c == 27)break;
 	}
 	SetConsoleTextAttribute(handle, WORD(15));
+	system("cls");
+}
+
+//void Menu::hitLoad() {
+//	system("cls");
+//	SetConsoleOutputCP(CP_UTF8);
+//	string user_load;
+//	DrawfromFile({ (0,0) }, "graphic/loadgame1.txt");
+//
+//	GotoXY({ 70,20 });
+//	//cout << "> ENTER NAME TO LOAD: ";
+//	
+//	getline(cin, user_load);
+//	load_profile = user_load;
+//
+//	system("cls");
+//}
+
+void Menu::hitLoad(bool& status) {
+	system("cls");
+	SetConsoleOutputCP(CP_UTF8);
+	string user_load;
+	DrawfromFile({ (0,0) }, "graphic/loadgame1.txt");
+
+	GotoXY({ 70,20 });
+
+	getline(cin, user_load);
+	load_profile = user_load;
+
+	fstream filein;
+	filein.open("save/" + user_load + ".txt");
+
+	if (filein.fail()) {
+		status = 0;
+		GotoXY({ 60,21 });
+		SetConsoleTextAttribute(handle, WORD(240));
+		cout << "- Cannot load your profile !\n";
+		SetConsoleTextAttribute(handle, WORD(15));
+		char c = ' ';
+		while (true) {
+			if (_kbhit()) {
+				c = _getch();
+			}
+			if (c == 27)
+				break;
+		}
+	}
+	else {
+		status = 1;
+	}
+	
+	filein.close();
 	system("cls");
 }
 
@@ -191,24 +248,25 @@ void Menu::Choose_Menu() {
 	Choose();
 	switch (state) {
 		case 1:
-			
 			p_game = true;
 			Loading();
 			PlaySound(NULL, 0, 0);
 			break;
 		case 2:
-			l_game = true;
-			system("cls");
+			hitLoad(load_status);
+			if (load_status) {
+				l_game = true;
+				Loading();
+			}
+			else
+				Choose_Menu();
 			break;
-
 		case 3:
-
 			hitOption();
 			Choose_Menu();
 			break;
 
 		case 4:
-
 			hitTutorial();
 			Choose_Menu();
 			break;
@@ -234,7 +292,8 @@ bool Menu::IsPlay()const {
 	return p_game;
 }
 
-bool Menu::IsLoad()const {
+bool Menu::IsLoad(string& profile) {
+	profile = load_profile;
 	return l_game;
 }
 
@@ -242,3 +301,25 @@ void Menu::setbool() {
 	p_game = l_game = false;
 }
 
+Menu::~Menu() {
+	handle=NULL;
+	state = 0;
+	state = NULL;
+
+	delete  NewGame,  LoadGame, Options, Tutorial, About, Quit, On_M, Off_M, Return;
+
+	if (!Menu_Keys.empty()) {
+		for (auto& e : Menu_Keys) 
+			delete e;
+	}
+	Menu_Keys.clear();
+
+	vector<Key*>Option_Keys;
+
+	if (!Option_Keys.empty()) {
+		for (auto& e : Option_Keys)
+			delete e;
+	}
+	Option_Keys.clear();
+
+}

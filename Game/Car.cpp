@@ -5,10 +5,11 @@ void Car::DRAW() {
 	for (int i = 0; i < height; i++) {
 		GotoXY({ position.X,position.Y++});
 		for (int j = 0; j < width; j++)
-			if(position.X+j>=20 && position.X+j<=102)
+			if(position.X+j>=17 && position.X+j<=109)
 				cout << graphic[i][j];
 	}
 }
+
 bool Car::isMoving()
 {
 	return state;
@@ -19,8 +20,7 @@ int Car::getWidth() {
 }
 
 void Car::Moving() {
-	if (pos.X + width >= 110 || pos.X + width <= 10) {
-		del(pos, { pos.X + width,pos.Y + height });
+	if (pos.X + width >= 125 || pos.X + width <= 10) {
 		state = false;
 		pos = inpos;
 		return;
@@ -45,7 +45,6 @@ void Car::Moving() {
 	}
 
 	DRAW();
-
 
 }
 

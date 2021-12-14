@@ -7,11 +7,10 @@ void Truck::DRAW() {
 		for (int j = 0; j < width; j++) {
 			if (position.X + j >= 20 && position.X + j <= 108)
 				cout << graphic[i][j];
-			else
-				continue;
 		}
 	}
 }
+
 bool Truck::isMoving()
 {
 	return state;
@@ -27,6 +26,7 @@ void Truck::Moving() {
 		state = true;
 		return;
 	}
+
 	if (pos.X + width >= 140 || pos.X + width <= 32) {
 		del(pos, { pos.X + width,pos.Y + height });
 		state = false;

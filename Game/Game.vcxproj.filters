@@ -51,9 +51,6 @@
     <ClCompile Include="Shark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SaveGame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -92,10 +89,7 @@
     <ClInclude Include="truck.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="shark.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SaveGame.h">
+    <ClInclude Include="Shark.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Menu.h">
@@ -131,6 +125,21 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="graphic\BLNT.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="graphic\win.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="C:\Users\USer\Downloads\Source (1).txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="graphic\loadgame1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="graphic\Big-Chungus.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="graphic\ded.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

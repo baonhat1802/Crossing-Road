@@ -20,6 +20,7 @@ TrafficLight::TrafficLight(const COORD& pos_, const short& width_, const short& 
 	infile.close();
 
 }
+
 void TrafficLight::DRAW() {
 	COORD position = pos;
 	for (int i = 0; i < height; i++) {
@@ -37,7 +38,7 @@ void TrafficLight::DRAW() {
 }
 
 void TrafficLight::ControlTraffic() {
-	int t = 15 + rand() % 100;
+	int t = 50 + rand() % 100;
 	if (time >= t)State = !State, time = 0;
 	else time++;
 
